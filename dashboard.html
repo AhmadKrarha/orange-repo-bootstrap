@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+        .side-bar {
+            width: 240px;
+            background: #343a40;
+            color: white;
+            padding: 20px;
+            flex-shrink: 0;
+        }
+
+        .side-bar .icons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 10px;
+            border-radius: 8px;
+        }
+
+        .main-wrapper {
+            flex-grow: 1;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+        .nav-bar {
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .nav-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+        .nav-left h1 {
+            font-size: 22px;
+            color: #333;
+        }
+        .hamburger {
+            display: none;
+            font-size: 24px;
+            color: #333;
+        }
+        .fa-ellipsis-vertical {
+            color: #666;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        .nav-right { 
+            display: flex; 
+            align-items: center; 
+            gap: 20px; 
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .nav-right input {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background: #fcfcfc;
+            width: 200px;
+        }
+
+        .nav-right img { 
+            width: 35px; 
+            height: 35px; 
+            border-radius: 50%; 
+        }
+        .content-padding {
+            padding: 30px;
+        }
+
+        .content-padding h2 {
+            margin-bottom: 25px;
+            font-size: 24px;
+            color: #333;
+        }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-top {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .card i { font-size: 24px; }
+        .card span { font-size: 24px; font-weight: bold; color: #333; }
+        .card p { color: #6c757d; font-size: 14px; font-weight: 500; }
+
+        .fa-house { color: #007bff; }
+        .fa-user { color: #28a745; }
+        .fa-box { color: #ffc107; }
+        .fa-screwdriver-wrench { color: #dc3545; }
+
+        .transaction-container {
+            background: white;
+            margin-top: 30px;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .transaction-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .table-controls {
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .table-controls select {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 5px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            min-width: 500px;
+        }
+
+        thead th {
+            background-color: #f8f9fa;
+            text-align: left;
+            padding: 12px 15px;
+            color: #333;
+            font-weight: 600;
+            border-bottom: 1px solid #eee;
+        }
+
+        tbody td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            color: #444;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .badge.paid {
+            background-color: #28a745;
+        }
+
+        .badge.pending {
+            background-color: #ffc107;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .page-num.active {
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #333;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+        @media screen and (max-width: 1024px) {
+            .side-bar {
+                width: 200px;
+            }
+            .cards-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            .content-padding {
+                padding: 20px;
+            }
+            .nav-bar {
+                padding: 0 20px;
+            }
+        }
+        @media screen and (max-width: 768px) {
+            .side-bar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                z-index: 999;
+                transform: translateX(-100%);
+            }
+
+            .side-bar.active {
+                transform: translateX(0);
+            }
+            .hamburger {
+                display: block;
+            }
+
+            .fa-bars {
+                display: block !important;
+            }
+            .cards-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            .content-padding {
+                padding: 15px;
+            }
+            .content-padding h2 {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+            .nav-bar {
+                padding: 0 15px;
+            }
+
+            .nav-left h1 {
+                font-size: 18px;
+            }
+
+            .fa-ellipsis-vertical {
+                display: none;
+            }
+            .nav-right input {
+                width: 150px;
+                font-size: 14px;
+            }
+            .transaction-container {
+                padding: 15px;
+            }
+            .card {
+                padding: 20px;
+            }
+        }
+
+     
+        @media screen and (max-width: 480px) {
+            .nav-left h1 {
+                display: none;
+            }
+
+            .nav-right input {
+                width: 120px;
+                padding: 6px 10px;
+            }
+
+            .nav-right img {
+                width: 30px;
+                height: 30px;
+            }
+
+            .card span {
+                font-size: 20px;
+            }
+
+            .card i {
+                font-size: 20px;
+            }
+
+            .transaction-container h3 {
+                font-size: 18px;
+            }
+
+            tbody td {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            thead th {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+
+    <div class="container">
+        <div class="side-bar" id="sidebar">
+            <div class="icons">
+                <i class="fa-solid fa-chart-column"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="icons">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Analytics</span>
+            </div>
+            <div class="icons">
+                <i class="fa-solid fa-message"></i>
+                <span>Messages</span>
+            </div>
+            <div class="icons">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </div>
+        </div>
+
+        <div class="main-wrapper">
+            <nav class="nav-bar">
+                <div class="nav-left">
+                    <i class="fa-solid fa-bars hamburger" id="hamburger"></i>
+                    <i class="fa-solid fa-ellipsis-vertical"></i> 
+                    <h1>Dashboard</h1>
+                </div>
+
+                <div class="nav-right">
+                    <div class="search-box">
+                        <input type="search" placeholder="Search...">
+                    </div>
+                    <img src="images\profile picture.jpg" alt="Profile">
+                </div>
+            </nav>
+
+            <div class="content-padding">
+                <h2>Dashboard</h2>
+
+                <div class="cards-container">
+                    <div class="card">
+                        <div class="card-top">
+                            <i class="fa-solid fa-house"></i>
+                            <span>$7,500</span>
+                        </div>
+                        <p>Total Sales</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-top">
+                            <i class="fa-solid fa-user"></i>
+                            <span>1,250</span>
+                        </div>
+                        <p>New Users</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-top">
+                            <i class="fa-solid fa-box"></i>
+                            <span>3,200</span>
+                        </div>
+                        <p>Total Orders</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-top">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            <span>50</span>
+                        </div>
+                        <p>Support Tickets</p>
+                    </div>
+                </div>
+
+                <div class="transaction-container">
+                    <div class="transaction-header">
+                        <h3>Transactions</h3>
+                    </div>
+                    
+                    <div class="table-controls">
+                        <div class="control-left">
+                            <span>Show</span>
+                            <select>
+                                <option>5</option>
+                                <option>10</option>
+                            </select>
+                            <span>entries</span>
+                        </div>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Status</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#10001</td>
+                                    <td>John Doe</td>
+                                    <td><span class="badge paid">Paid</span></td>
+                                    <td><strong>$120.00</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>#10002</td>
+                                    <td>Jane Smith</td>
+                                    <td><span class="badge pending">Pending</span></td>
+                                    <td><strong>$75.00</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>#10003</td>
+                                    <td>Mike Johnson</td>
+                                    <td><span class="badge paid">Paid</span></td>
+                                    <td><strong>$45.00</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>#10004</td>
+                                    <td>Sarah Brown</td>
+                                    <td><span class="badge pending">Pending</span></td>
+                                    <td><strong>$200.00</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>#10005</td>
+                                    <td>Chris Wilson</td>
+                                    <td><span class="badge paid">Paid</span></td>
+                                    <td><strong>$99.00</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="pagination">
+                        <span>Previous</span>
+                        <span class="page-num active">1</span>
+                        <span>Next <i class="fa-solid fa-chevron-down" style="font-size: 10px;"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

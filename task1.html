@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Web Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .nav-bar {
+            background-color: white;
+            color: black;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-bar nav a {
+            color: black;
+            text-decoration: none;
+            margin-left: 1rem;
+        }
+        .hero img {
+          position: relative;
+            width: 100%;
+            height: auto;
+            z-index: 0;
+        }
+        h2 {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .Cards {
+            display: flex;
+            justify-content: space-around;
+            padding: 0 2rem;
+        }
+        .hero h1, .hero p {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-align: center;
+            z-index: 1;
+        }
+ 
+    </style>
+
+</head>
+
+<body>
+    <div class="nav-bar">
+        <h2>My Website</h2>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <a href="#">Services</a>
+        </nav>
+
+    </div>
+    <div class="hero">
+        <img src="images\herosection image.jpg" alt="Hero Image">
+        <h1>Welcome to our Website</h1>
+        <p>Creating a modern and responsive web experience for all users.</p>
+        <button>Get Started</button>
+    </div>
+
+    <h2>Our Services</h2>
+    <div class="Cards">
+        <div class="Card">
+            <i class="fa-solid fa-gear"></i>
+            <h3>Web Design</h3>
+            <p>We create stunning and responsive web designs that captivate your audience.</p>
+        </div>
+        <div class="Card">
+           <i class="fa-brands fa-git-alt"></i>
+            <h3>SEO Optimization</h3>
+            <p>Improve your website's visibility and ranking on search engines with our SEO services.</p>
+        </div>
+        <div class="Card">
+            <i class="fa-solid fa-pen-fancy"></i>
+            <h3>Content Creation</h3>
+            <p>Engage your audience with high-quality content tailored to your brand's voice.</p>
+        </div>
+    </div>
+        
+    <hr>
+        <div class="AboutUs">
+            <img src="images\conference-room-with-large-screen-that-says-conference_23-2151929038.avif" alt="About Us Image">
+            <div class="AboutUsText">
+                <h2>About Us</h2>
+                <p>We are a team of passionate professionals dedicated to delivering top-notch web solutions. Our
+                    mission is to help businesses thrive in the digital world by providing innovative and effective
+                    services.</p>
+                <hr>
+                <p>Contact us today to learn more about how we can help your business grow!</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

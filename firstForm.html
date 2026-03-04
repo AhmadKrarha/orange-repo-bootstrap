@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Form</title>
+    <style>
+      *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+       body{
+        font-family: sans-serif;
+        background-color: #00129d;
+
+       }
+      p{
+            text-align: left;
+            margin: 0.5rem 0;
+            font-weight: lighter;
+            font-family: sans-serif;
+            font-size: 16px;
+        }
+        .container{
+            margin: 100px auto;
+         display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 70vh;
+        width: 500px;
+        background-color: rgb(255, 255, 255);
+        border:1px solid orange ;
+        }
+         input[type="email"], input[type="password"]{
+            width: 100%;
+            padding: 10px;
+            margin: 0.5rem 0;
+            border:1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type = "text"]{
+            width: 49%;
+            padding: 10px;
+            margin: 0.5rem 0;
+            border:1px solid #ccc;
+            border-radius: 4px;
+        }
+        button{
+            width: 30%;
+            padding: 10px;
+            background-color: rgb(0, 17, 255);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        a{
+            color: rgb(0, 85, 255);
+            text-decoration: none;
+        }
+        @media(max-width: 768px){
+            .container{
+                width: 90%;
+                height: 100vh;
+            }
+             input[type = "text"]{
+            width: 100%;
+             margin: 0.5rem 0;
+
+       
+             }
+        }
+        @media (max-width : 480px) {
+                .container{
+                    height: 100vh;
+                    width: 100%;
+                    height: auto;
+                }
+                input[type = "text"]{
+                width: 100%;
+                margin: 0.5rem 0;
+                }
+            
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="container">
+        <h1>Sign Up</h1>
+        <p>Please fill out the form below to create an account.</p>
+        <hr>
+        <form action="post" method="POST">
+            <input type="text" name="firstName" placeholder="First Name" required>
+             <input type="text" name="lastName" placeholder="Last Name" required><br><br>
+            <input type="email" name="email" placeholder="Email" required><br><br>
+            <input type="password" name="password" placeholder="Password" required><br><br>
+            <input type="password" name="confirmPassword" placeholder="Confirm Password" required><br><br>
+            <input type="checkbox" name="terms" required> I accept to the <a href="#">terms of use </a>& <a href="#">privacy policy.</a><br><br>
+            <button type="submit">Sign Up</button>
+        </form>
+        </div>
+    </main>
+</body>
+</html>
